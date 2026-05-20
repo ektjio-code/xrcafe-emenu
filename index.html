@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Marché — New French Cuisine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Base ---------- */
+  :root {
+    --bg: #faf7f0;
+    --ink: #1a2438;
+    --ink-soft: #2c3654;
+    --rule: #1a2438;
+    --accent: #6b5d3f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    padding: 48px 24px 64px;
+  }
+
+  .menu {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Header ---------- */
+  .masthead {
+    text-align: center;
+    padding: 8px 0 28px;
+  }
+
+  .masthead h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 9vw, 88px);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+
+  .masthead .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(14px, 1.8vw, 18px);
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+
+  .masthead .service {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Scalloped divider ---------- */
+  .scallop {
+    display: block;
+    width: 100%;
+    height: 18px;
+    margin: 18px 0 8px;
+    color: var(--rule);
+  }
+
+  /* ---------- Section ---------- */
+  .section {
+    max-width: 560px;
+    margin: 28px auto 0;
+  }
+
+  .section h2 {
+    font-family: 'Pinyon Script', cursive;
+    font-weight: 400;
+    font-size: 40px;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+
+  .section .lede {
+    text-align: center;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    max-width: 32ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---------- Menu item ---------- */
+  .item {
+    margin-bottom: 64px;
+    line-height: 1.4;
+  }
+
+  .item-name {
+    display: inline;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 200ms ease, border-color 200ms ease;
+    cursor: pointer;
+  }
+
+  .item-name:hover,
+  .item-name:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    outline: none;
+  }
+
+  .item-desc {
+    display: block;
+    margin-top: 4px;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+
+  .price {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ---------- Footnote ---------- */
+  .footnote {
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 720px) {
+    body { padding: 32px 18px 48px; }
+    .masthead h1 { letter-spacing: 0.14em; }
+    .masthead .tagline { letter-spacing: 0.32em; }
+    .section h2 { font-size: 36px; }
+  }
+
+  /* Subtle entrance */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .menu > * { animation: fadeUp 600ms ease both; }
+  .masthead { animation-delay: 0ms; }
+  .section  { animation-delay: 120ms; }
+</style>
+</head>
+<body>
+
+<main class="menu">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="masthead">
+    <h1>XR CAFE</h1>
+    <div class="tagline">Coffee And Bakery</div>
+  </header>
+
+  <!-- ===================== TOP SCALLOP ===================== -->
+  <svg class="scallop" viewBox="0 0 900 18" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M 0 14
+             Q 15 0, 30 14 T 60 14 T 90 14 T 120 14 T 150 14 T 180 14
+             T 210 14 T 240 14 T 270 14 T 300 14 T 330 14 T 360 14
+             T 390 14 T 420 14 T 450 14 T 480 14 T 510 14 T 540 14
+             T 570 14 T 600 14 T 630 14 T 660 14 T 690 14 T 720 14
+             T 750 14 T 780 14 T 810 14 T 840 14 T 870 14 T 900 14"
+          fill="none" stroke="currentColor" stroke-width="1"/>
+  </svg>
+
+  <!-- ===================== ENTREES ===================== -->
+  <section class="section" aria-labelledby="sec-entrees">
+    <h2 id="sec-entrees">Baked Goods</h2>
+    <p class="lede">Baked Fresh Daily</p>
+
+    <div class="item">
+      <a class="item-name" href="ar-viewer.html?item=classic-croissant">Classic Croissant</a>
+      <span class="item-desc">Hand-rolled with French butter and folded into 27 delicate layers, baked golden and shatter-crisp</span>
+    </div>
+
+    <div class="item">
+      <a class="item-name" href="ar-viewer.html?item=chocolate-croissant">Chocolate Croissant</a>
+      <span class="item-desc">Laminated butter pastry wrapped around two batons of dark Belgian chocolate, baked to a glossy finish</span>
+    </div>
+
+    <div class="item">
+      <a class="item-name" href="ar-viewer.html?item=gourmet-doughnut">Gourmet Doughnut</a>
+      <span class="item-desc">Pillowy brioche dough, slow-proofed overnight and finished with a seasonal house glaze</span>
+    </div>
+
+    <div class="item">
+      <a class="item-name" href="ar-viewer.html?item=whole-carrot-cake">Whole Carrot Cake</a>
+      <span class="item-desc">Three layers of spiced carrot sponge with toasted walnuts, cream cheese frosting and candied orange zest</span>
+    </div>
+
+    <div class="item">
+      <a class="item-name" href="ar-viewer.html?item=whole-strawberry-chocolate-cake">Whole Strawberry Chocolate Cake</a>
+      <span class="item-desc">Dark chocolate sponge layered with fresh strawberries and whipped vanilla ganache, finished in cocoa shavings</span>
+    </div>
+  </section>
+
+  <!-- ===================== BOTTOM SCALLOP ===================== -->
+  <svg class="scallop" viewBox="0 0 900 18" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M 0 14
+             Q 15 0, 30 14 T 60 14 T 90 14 T 120 14 T 150 14 T 180 14
+             T 210 14 T 240 14 T 270 14 T 300 14 T 330 14 T 360 14
+             T 390 14 T 420 14 T 450 14 T 480 14 T 510 14 T 540 14
+             T 570 14 T 600 14 T 630 14 T 660 14 T 690 14 T 720 14
+             T 750 14 T 780 14 T 810 14 T 840 14 T 870 14 T 900 14"
+          fill="none" stroke="currentColor" stroke-width="1"/>
+  </svg>
+
+</main>
+
+</body>
+</html>
