@@ -198,6 +198,59 @@
   .dialog-close:hover { background: var(--accent); }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+  /* ---------- AR loading overlay ---------- */
+  .loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(250, 247, 240, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9998;
+    animation: fadeIn 150ms ease both;
+  }
+  .loading[hidden] { display: none; }
+  .loading-spinner {
+    width: 52px;
+    height: 52px;
+    border: 2px solid rgba(26, 36, 56, 0.15);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin 800ms linear infinite;
+    margin-bottom: 22px;
+  }
+  .loading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+    text-align: center;
+    padding: 0 28px;
+    max-width: 32ch;
+    line-height: 1.4;
+  }
+  .loading-cancel {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+    border: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 8px 16px;
+    border-bottom: 1px solid transparent;
+    transition: color 200ms, border-color 200ms;
+  }
+  .loading-cancel:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   /* Subtle entrance */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(8px); }
@@ -273,6 +326,13 @@
 
 </main>
 
+<!-- ===================== AR LOADING OVERLAY ===================== -->
+<div id="ar-loading" class="loading" role="status" aria-live="polite" hidden>
+  <div class="loading-spinner" aria-hidden="true"></div>
+  <p class="loading-text" id="ar-loading-text">Opening AR…</p>
+  <button type="button" class="loading-cancel">Cancel</button>
+</div>
+
 <!-- ===================== AR UNSUPPORTED DIALOG ===================== -->
 <div id="ar-unsupported" class="dialog" role="dialog" aria-modal="true" aria-labelledby="ar-dialog-title" hidden>
   <div class="dialog-content">
@@ -339,10 +399,12 @@
       link.setAttribute('rel', 'ar');
       // Begin downloading on first touch so AR opens faster
       link.addEventListener('touchstart', () => prefetch(usdzUrl), { passive: true, once: true });
+      link.addEventListener('click', () => showLoading(item.name));
     } else if (isAndroid) {
       // Chrome / Samsung Internet launch Scene Viewer via this intent
       link.href = buildSceneViewerIntent(glbUrl, item.name);
       link.addEventListener('touchstart', () => prefetch(glbUrl), { passive: true, once: true });
+      link.addEventListener('click', () => showLoading(item.name));
     } else {
       // Desktop or non-AR browser: show fallback dialog
       link.href = '#';
@@ -351,6 +413,33 @@
         showUnsupported();
       });
     }
+  });
+
+  // ---- AR loading overlay ----
+  const loading = document.getElementById('ar-loading');
+  const loadingText = document.getElementById('ar-loading-text');
+  const loadingCancel = loading.querySelector('.loading-cancel');
+  let loadingTimer = null;
+
+  function showLoading(itemName) {
+    loadingText.textContent = itemName ? 'Opening AR for ' + itemName + '…' : 'Opening AR…';
+    loading.hidden = false;
+    // Safety net: if nothing happens within 12s, drop the overlay so the user isn't stuck.
+    clearTimeout(loadingTimer);
+    loadingTimer = setTimeout(hideLoading, 12000);
+  }
+  function hideLoading() {
+    if (loading.hidden) return;
+    loading.hidden = true;
+    clearTimeout(loadingTimer);
+  }
+  loadingCancel.addEventListener('click', hideLoading);
+
+  // Hide overlay when user returns from AR (browser back from bfcache, focus, or tab becomes visible).
+  window.addEventListener('pageshow', hideLoading);
+  window.addEventListener('focus', hideLoading);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') hideLoading();
   });
 
   // ---- Unsupported dialog ----
