@@ -4,13 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XR Cafe — Coffee And Bakery</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://unpkg.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-<!-- Warm up the next page and its JS while the user reads the menu -->
-<link rel="prefetch" href="ar-viewer.html">
-<link rel="modulepreload" href="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
   /* ---------- Base ---------- */
   :root {
@@ -66,14 +63,6 @@
     text-transform: uppercase;
     color: var(--ink);
     margin-bottom: 22px;
-  }
-
-  .masthead .service {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 14px;
-    letter-spacing: 0.05em;
-    color: var(--ink-soft);
   }
 
   /* ---------- Scalloped divider ---------- */
@@ -148,23 +137,6 @@
     font-weight: 400;
   }
 
-  .price {
-    font-style: normal;
-    font-weight: 400;
-    color: var(--ink-soft);
-    white-space: nowrap;
-  }
-
-  /* ---------- Footnote ---------- */
-  .footnote {
-    text-align: center;
-    font-style: italic;
-    font-size: 15px;
-    color: var(--ink-soft);
-    margin-top: 12px;
-    letter-spacing: 0.02em;
-  }
-
   /* ---------- Responsive ---------- */
   @media (max-width: 720px) {
     body { padding: 32px 18px 48px; }
@@ -172,6 +144,59 @@
     .masthead .tagline { letter-spacing: 0.32em; }
     .section h2 { font-size: 36px; }
   }
+
+  /* ---------- AR unsupported dialog ---------- */
+  .dialog {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 36, 56, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 9999;
+    animation: fadeIn 200ms ease both;
+  }
+  .dialog[hidden] { display: none; }
+  .dialog-content {
+    background: var(--bg);
+    max-width: 380px;
+    width: 100%;
+    padding: 36px 30px 28px;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(26, 36, 56, 0.2);
+  }
+  .dialog-content h3 {
+    font-family: 'Pinyon Script', cursive;
+    font-weight: 400;
+    font-size: 40px;
+    margin-bottom: 14px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .dialog-content p {
+    font-size: 17px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    line-height: 1.45;
+  }
+  .dialog-close {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 12px 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 200ms;
+  }
+  .dialog-close:hover { background: var(--accent); }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   /* Subtle entrance */
   @keyframes fadeUp {
@@ -204,33 +229,33 @@
           fill="none" stroke="currentColor" stroke-width="1"/>
   </svg>
 
-  <!-- ===================== ENTREES ===================== -->
+  <!-- ===================== BAKED GOODS ===================== -->
   <section class="section" aria-labelledby="sec-entrees">
     <h2 id="sec-entrees">Baked Goods</h2>
     <p class="lede">Baked Fresh Daily</p>
 
     <div class="item">
-      <a class="item-name" href="ar-viewer.html?item=classic-croissant">Classic Croissant</a>
+      <a class="item-name" href="#" data-slug="classic-croissant">Classic Croissant</a>
       <span class="item-desc">Hand-rolled with French butter and folded into 27 delicate layers, baked golden and shatter-crisp</span>
     </div>
 
     <div class="item">
-      <a class="item-name" href="ar-viewer.html?item=chocolate-croissant">Chocolate Croissant</a>
+      <a class="item-name" href="#" data-slug="chocolate-croissant">Chocolate Croissant</a>
       <span class="item-desc">Laminated butter pastry wrapped around two batons of dark Belgian chocolate, baked to a glossy finish</span>
     </div>
 
     <div class="item">
-      <a class="item-name" href="ar-viewer.html?item=gourmet-doughnut">Gourmet Doughnut</a>
+      <a class="item-name" href="#" data-slug="gourmet-doughnut">Gourmet Doughnut</a>
       <span class="item-desc">Pillowy brioche dough, slow-proofed overnight and finished with a seasonal house glaze</span>
     </div>
 
     <div class="item">
-      <a class="item-name" href="ar-viewer.html?item=whole-carrot-cake">Whole Carrot Cake</a>
+      <a class="item-name" href="#" data-slug="whole-carrot-cake">Whole Carrot Cake</a>
       <span class="item-desc">Three layers of spiced carrot sponge with toasted walnuts, cream cheese frosting and candied orange zest</span>
     </div>
 
     <div class="item">
-      <a class="item-name" href="ar-viewer.html?item=whole-strawberry-chocolate-cake">Whole Strawberry Chocolate Cake</a>
+      <a class="item-name" href="#" data-slug="whole-strawberry-chocolate-cake">Whole Strawberry Chocolate Cake</a>
       <span class="item-desc">Dark chocolate sponge layered with fresh strawberries and whipped vanilla ganache, finished in cocoa shavings</span>
     </div>
   </section>
@@ -247,6 +272,109 @@
   </svg>
 
 </main>
+
+<!-- ===================== AR UNSUPPORTED DIALOG ===================== -->
+<div id="ar-unsupported" class="dialog" role="dialog" aria-modal="true" aria-labelledby="ar-dialog-title" hidden>
+  <div class="dialog-content">
+    <h3 id="ar-dialog-title">AR not available</h3>
+    <p>This experience needs an AR-capable phone.<br>Please open this menu on a modern iPhone or Android device.</p>
+    <button type="button" class="dialog-close">Got it</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Slug -> { file basename, display name }
+  // file is the .glb/.usdz filename without extension under models/
+  const ITEMS = {
+    'classic-croissant':              { file: 'croissant',     name: 'Classic Croissant' },
+    'chocolate-croissant':            { file: 'choccroissant', name: 'Chocolate Croissant' },
+    'gourmet-doughnut':               { file: 'donut',         name: 'Gourmet Doughnut' },
+    'whole-carrot-cake':              { file: 'carrotcake',    name: 'Whole Carrot Cake' },
+    'whole-strawberry-chocolate-cake':{ file: 'choccake',      name: 'Whole Strawberry Chocolate Cake' },
+  };
+
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/i.test(ua);
+
+  // Absolute base URL of the directory containing this page
+  const baseHref = location.href.replace(/[^/]*$/, '');
+
+  function buildSceneViewerIntent(glbUrl, title) {
+    const fallback = encodeURIComponent(baseHref + '?ar=unsupported');
+    return 'intent://arvr.google.com/scene-viewer/1.0' +
+      '?file=' + encodeURIComponent(glbUrl) +
+      '&mode=ar_only' +
+      '&title=' + encodeURIComponent(title) +
+      '#Intent;scheme=https;package=com.google.ar.core' +
+      ';action=android.intent.action.VIEW' +
+      ';S.browser_fallback_url=' + fallback +
+      ';end;';
+  }
+
+  // Pre-warm the model file for an item (called on first touch/hover)
+  const warmed = new Set();
+  function prefetch(url) {
+    if (warmed.has(url)) return;
+    warmed.add(url);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+  }
+
+  document.querySelectorAll('.item-name[data-slug]').forEach(link => {
+    const slug = link.dataset.slug;
+    const item = ITEMS[slug];
+    if (!item) return;
+
+    const glbUrl  = baseHref + 'models/' + item.file + '.glb';
+    const usdzUrl = baseHref + 'models/' + item.file + '.usdz';
+
+    if (isIOS) {
+      // Safari (and all iOS browsers) launches AR Quick Look when navigating to a .usdz
+      link.href = usdzUrl;
+      link.setAttribute('rel', 'ar');
+      // Begin downloading on first touch so AR opens faster
+      link.addEventListener('touchstart', () => prefetch(usdzUrl), { passive: true, once: true });
+    } else if (isAndroid) {
+      // Chrome / Samsung Internet launch Scene Viewer via this intent
+      link.href = buildSceneViewerIntent(glbUrl, item.name);
+      link.addEventListener('touchstart', () => prefetch(glbUrl), { passive: true, once: true });
+    } else {
+      // Desktop or non-AR browser: show fallback dialog
+      link.href = '#';
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showUnsupported();
+      });
+    }
+  });
+
+  // ---- Unsupported dialog ----
+  const dialog = document.getElementById('ar-unsupported');
+  const closeBtn = dialog.querySelector('.dialog-close');
+
+  function showUnsupported() {
+    dialog.hidden = false;
+    closeBtn.focus();
+  }
+  function hideUnsupported() {
+    dialog.hidden = true;
+  }
+
+  closeBtn.addEventListener('click', hideUnsupported);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) hideUnsupported(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !dialog.hidden) hideUnsupported(); });
+
+  // Show the dialog if Android Scene Viewer fell back to us (no ARCore on device)
+  if (new URLSearchParams(location.search).get('ar') === 'unsupported') {
+    showUnsupported();
+  }
+})();
+</script>
 
 </body>
 </html>
