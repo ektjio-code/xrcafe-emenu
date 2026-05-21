@@ -32,6 +32,12 @@
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
     padding: 48px 24px 64px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .menu {
@@ -373,6 +379,62 @@
   if (new URLSearchParams(location.search).get('ar') === 'unsupported') {
     showUnsupported();
   }
+})();
+</script>
+
+<!-- ===================== ANTI-TAMPER DETERRENTS ===================== -->
+<!-- NOTE: deters casual users only. Anyone determined can bypass via view-source: -->
+<!-- URL prefix, curl, the public repo, or by toggling JS off in browser settings. -->
+<script>
+(function () {
+  // Skip protections in local development so debugging stays painless
+  var host = location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1' || host === '' || location.protocol === 'file:') return;
+
+  // 1) Block right-click context menu
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); }, true);
+
+  // 2) Block dev-tool / view-source keyboard shortcuts
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toUpperCase();
+    var blocked =
+      k === 'F12' ||
+      ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'I' || k === 'J' || k === 'C')) ||
+      (e.metaKey && e.altKey && (k === 'I' || k === 'J' || k === 'C')) ||
+      ((e.ctrlKey || e.metaKey) && (k === 'U' || k === 'S'));
+    if (blocked) { e.preventDefault(); e.stopPropagation(); return false; }
+  }, true);
+
+  // 3) Block image drag, text selection, and copy
+  document.addEventListener('dragstart',   function (e) { e.preventDefault(); }, true);
+  document.addEventListener('selectstart', function (e) { e.preventDefault(); }, true);
+  document.addEventListener('copy',        function (e) { e.preventDefault(); }, true);
+
+  // 4) DevTools open detection via window-size heuristic
+  var threshold = 170;
+  var lockedDown = false;
+  function lockPage() {
+    if (lockedDown) return;
+    lockedDown = true;
+    document.title = 'Access restricted';
+    document.body.innerHTML =
+      '<div style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:Cormorant Garamond,Georgia,serif;font-style:italic;background:#faf7f0;color:#1a2438">' +
+        '<div style="font-family:Pinyon Script,cursive;font-style:normal;font-weight:400;font-size:42px;margin-bottom:14px;line-height:1">Access restricted</div>' +
+        '<div style="font-size:18px;color:#2c3654;max-width:36ch;line-height:1.45">Developer tools detected. Please close them and reload the page.</div>' +
+      '</div>';
+  }
+  function checkDevTools() {
+    var wd = window.outerWidth  - window.innerWidth;
+    var hd = window.outerHeight - window.innerHeight;
+    if (wd > threshold || hd > threshold) lockPage();
+  }
+  setInterval(checkDevTools, 1000);
+  checkDevTools();
+
+  // 5) Debugger trap — pauses execution when DevTools is open
+  setInterval(function () {
+    (function () {})['constructor']('debugger')();
+  }, 500);
 })();
 </script>
 
