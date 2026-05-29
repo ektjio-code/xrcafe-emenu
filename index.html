@@ -312,9 +312,9 @@
     const fallback = encodeURIComponent(baseHref + '?ar=unsupported');
     return 'intent://arvr.google.com/scene-viewer/1.0' +
       '?file=' + encodeURIComponent(glbUrl) +
-      '&mode=ar_only' +
+      '&mode=ar_preferred' +
       '&title=' + encodeURIComponent(title) +
-      '#Intent;scheme=https;package=com.google.ar.core' +
+      '#Intent;scheme=https;package=com.google.android.googlequicksearchbox' +
       ';action=android.intent.action.VIEW' +
       ';S.browser_fallback_url=' + fallback +
       ';end;';
